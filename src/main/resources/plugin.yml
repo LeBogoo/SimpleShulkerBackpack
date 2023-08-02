@@ -1,0 +1,8 @@
+name: SimpleShulkerBackpack
+version: "${project.version}"
+main: me.lebogo.simpleshulkerbackpack.SimpleShulkerBackpack
+api-version: 1.19
+prefix: SSB
+authors: [LeBogo]
+description: This plugin allows players to open a shulker box from their inventory.
+website: https://lebogo.me
