@@ -1,5 +1,6 @@
 package me.lebogo.simpleshulkerbackpack.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
@@ -8,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,7 +26,10 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        if (!item.getType().toString().contains("SHULKER_BOX")) {
+        boolean isShulkerBox = item.getType().toString().contains("SHULKER_BOX");
+        boolean isEnderChest = item.getType().equals(Material.ENDER_CHEST);
+
+        if (!isShulkerBox && !isEnderChest) {
             return;
         }
 
@@ -36,6 +39,19 @@ public class PlayerInteractListener implements Listener {
 
         event.setCancelled(true);
 
+        if (isShulkerBox) {
+            handleShulkerbox(item, player);
+            return;
+        }
+
+        if (isEnderChest) {
+            handleEnderChest(item, player);
+            return;
+        }
+
+    }
+
+    private void handleShulkerbox(ItemStack item, Player player) {
         ItemMeta itemMeta = item.getItemMeta();
 
         if (!(itemMeta instanceof BlockStateMeta)) {
@@ -65,4 +81,9 @@ public class PlayerInteractListener implements Listener {
 
     }
 
+    private void handleEnderChest(ItemStack item, Player player) {
+        Inventory enderChestInventory = player.getEnderChest();
+
+        player.openInventory(enderChestInventory);
+    }
 }
